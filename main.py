@@ -14,10 +14,17 @@ ROAST = (
 )
 
 
-def main() -> None:
-    text = ROAST.strip()
+def validate(text: str) -> str:
+    """Gate check, mirroring the sealed scorer: 1-160 chars, one line."""
+    text = text.strip()
     assert 1 <= len(text) <= 160, f"roast is {len(text)} chars, must be 1-160"
+    assert "\n" not in text, "roast must be a single line"
     assert text.strip(), "roast must not be only whitespace"
+    return text
+
+
+def main() -> None:
+    text = validate(ROAST)
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(text)
